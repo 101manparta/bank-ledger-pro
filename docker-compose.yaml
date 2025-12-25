@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  # Service Database
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: bank_db
+    ports:
+      - "5432:5432"
+
+  # Service Aplikasi Go kita
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_URL: "postgres://postgres:secret@db:5432/bank_db?sslmode=disable"
